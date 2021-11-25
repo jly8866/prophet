@@ -1,0 +1,17 @@
+/target/
+.classpath
+.project
+.settings/
+target/
+.DS_Store
+**/cobertura
+logs/
+tmp/
+data/
+**/.springBeans
+.idea
+*.iml
+*.jar
+/.swp
+.git
+src/main/resources/application.properties.*

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+<!--Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，会看到log4j2内部各种详细输出。
+		日志文件具体输出还是取决于logger里的level配置-->
+<!--monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数-->
+<Configuration status="WARN" monitorInterval="30">
+	<!-- 配置日志输出地，有3个：Console,File,RollingFile -->
+    <appenders>
+    	<!-- 输出到console -->
+    	<Console name="Console" target="SYSTEM_OUT">
+    		<!--输出日志的格式-->
+    		<PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%p] - %m%n"/>
+    	</Console>
+    	<!-- 文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，这个也挺有用的，适合临时测试用
+    	<File name="log" fileName="logs\test.log" append="false">
+    		<PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+    	</File> -->
+    	<!-- 每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
+    	<RollingFile name="RollingFile" fileName="logs/prophet.log"
+    		filePattern="logs/$${date:yyyy-MM-dd}\prophet-%d{yyyy-MM-dd}-%i.log">
+    		<PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%p] - %m%n"/>
+    		<Policies>
+    			<SizeBasedTriggeringPolicy size="50 MB" />
+    		</Policies>
+    		<!-- DefaultRolloverStrategy属性如不设置，则默认为最多保留同一文件夹下7个文件 -->
+    		<DefaultRolloverStrategy max="3"/>
+    	</RollingFile>
+    </appenders>
+    <!-- logger节点包含两种：Root-默认logger，Logger：自定义的logger -->
+    <loggers>
+    
+    	<!-- <logger name="prophet" level="INFO">
+    		AppenderRef：Logger的子节点，用来指定该日志输出到哪个Appender,如果没有指定，就会默认继承自Root的appender.
+    			如果指定了，那么会在指定的这个Appender和Root的Appender中都会输出 
+    		<appender-ref ref="Console" />
+    		<appender-ref ref="RollingFile" />
+    	</logger> -->
+    	<root level="INFO">
+    		<appender-ref ref="Console" />
+    	</root>
+    </loggers>
+</Configuration>
